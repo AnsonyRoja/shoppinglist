@@ -33,11 +33,22 @@ class _MyHomePageState extends State<MyHomePage> {
     for (var value in listCounters) {
       print('este es el value $value');
       setState(() {
-        double removeComma = double.parse(
-            value['price'].toString().replaceAll(".", "").replaceAll(",", "."));
+        String formmatedPrice = value['price'].toString();
 
-        print('Esto es el valor de removecomma $removeComma');
-        cuentaTotal += removeComma * double.parse(value['counter'].toString());
+        if (double.tryParse(formmatedPrice) is double) {
+          print('Esto es un double no se necesita parsear');
+          cuentaTotal += double.parse(value['price'].toString()) *
+              double.parse(value['counter'].toString());
+        } else {
+          print('Esto no es un double si se necesita parsear');
+
+          formmatedPrice = formmatedPrice.replaceAll(".", "");
+          formmatedPrice = formmatedPrice.replaceAll(",", ".");
+          double removeComma = double.parse(formmatedPrice);
+
+          cuentaTotal +=
+              removeComma * double.parse(value['counter'].toString());
+        }
       });
     }
   }
